@@ -8,8 +8,7 @@ from exceptions import ServiceNotFoundException
 
 class ServiceManager(object):
 
-    service_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'services'))
-    service_dirs = [service_dir]
+    service_dirs = [os.path.abspath(os.path.join(os.path.dirname(__file__), 'services'))]
     is_initialized = False
 
     def __init__(self):
