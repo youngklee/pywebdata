@@ -1,0 +1,15 @@
+#compiled python
+*.pyc
+
+#setuptools distribution folfer
+/dist/
+
+# Python egg metadata
+/*.egg-info
+/*.egg
+
+#Mac file
+.DS_Store
+
+#services
+services/
