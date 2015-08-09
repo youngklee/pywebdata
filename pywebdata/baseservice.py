@@ -1,3 +1,4 @@
+import copy
 
 class ServiceMount(type):
 
@@ -13,3 +14,15 @@ class BaseService(object):
 
     def query(self, *args, **kwargs):
         raise NotImplementedError
+
+    def filter(self, *args, **kwargs):
+        raise NotImplementedError
+
+    def get_inputs(self):
+        pass
+
+    def get_outputs(self):
+        pass
+
+    def copy(self):
+        return copy.deepcopy(self)
