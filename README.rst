@@ -26,3 +26,10 @@ Usage
     
     my_new_service = Service('my-service')
     my_new_service.query(latitude=50, longitude=45)
+
+3) An alternative to adding new services to the *services/* directory is to create a new directory and register it this way:
+
+.. code-block:: python
+
+  from pywebdata import ServiceManager
+  ServiceManager.add_path('path/to/new/service/')
