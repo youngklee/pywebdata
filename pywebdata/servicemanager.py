@@ -1,10 +1,9 @@
 import os
 import imp
 from glob import glob
-import pkgutil
 
 from baseservice import BaseService
-from exceptions import ServiceNotFoundException
+import exceptions as excpt
 
 class ServiceManager(object):
 
@@ -32,4 +31,4 @@ class ServiceManager(object):
         try:
             return BaseService.services[service_name]()
         except:
-            raise ServiceNotFoundException
+            raise excpt.ServiceNotFoundException
