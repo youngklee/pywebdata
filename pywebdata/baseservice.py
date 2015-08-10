@@ -4,6 +4,7 @@ import requests
 from xml.etree import ElementTree as ET
 
 from parameter import Input, Output
+from parsers import parse_query
 
 output_parsers = {'json': json.loads, 'xml': ET.parse}
 
@@ -34,6 +35,14 @@ class BaseService(object):
         results = output_parsers.get('json', lambda x:x)(r.text)
         print self.parse_results(results)
 
+    def query_many(self, qry_string='', dict_list=[]):
+        if qry_string and dict_list:
+            raise Exception, 'Must specify qry_string or dict_list, not both'
+        if dict_list:
+            map(self.query, dict_list)
+        if qry_string:
+            conditions = parse_query(qry_string)
+    
     def parse_results(self, results):
         return map(self.parse_row, self.f_iter(results))
 
