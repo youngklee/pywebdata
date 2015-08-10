@@ -1,8 +1,9 @@
 #compiled python
 *.pyc
 
-#setuptools distribution folfer
-/dist/
+#setuptools distribution folder
+dist/
+build/
 
 # Python egg metadata
 /*.egg-info
