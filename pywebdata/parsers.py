@@ -1,8 +1,8 @@
 import re
 import operator
+from collections import defaultdict
 
 #borrowed from standard library distutils.versionpredicate
-
 compmap = {
     "<": operator.lt, 
     "<=": operator.le, 
@@ -25,9 +25,8 @@ def parse_query(qry):
         d['value'] = split_cond[2]
         return d
         
-    return map(make_cond_dict, qry.split('and'))
-    
-if __name__ == '__main__':
-
-    for i in parse_query('damon = 5 and m1ke >= 6.0 and b = 203948.09238'):
-        print i
+    conditions = map(make_cond_dict, qry.split('and'))
+    conditions_by_name = defaultdict(list)
+    for c in conditions:
+        conditions_by_name[c['name']].append(c)
+    return conditions_by_name
