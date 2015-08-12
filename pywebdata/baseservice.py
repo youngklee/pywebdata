@@ -1,6 +1,7 @@
 import copy
 import json
 import requests
+from string import Template
 from itertools import product, imap
 from xml.etree import ElementTree as ET
 
@@ -63,7 +64,8 @@ class BaseService(object):
         return self.query_many(queries)
     
     def parse_results(self, results):
-        return map(self.parse_row, self.f_iter(results))
+        parser = self.get_parser()
+        return map(self.parse_row, parser(results))
 
     def parse_row(self, row):
         result_row = {}
@@ -77,6 +79,28 @@ class BaseService(object):
     def filter(self, *args, **kwargs):
         raise NotImplementedError
 
+    @classmethod
+    def add_url(cls, url):
+        setattr(cls, 'url', Template(url))
+    
+    @classmethod
+    def add_input(cls, name, iotype, required=True, min=None, max=None, default=None, incr=None):
+        _input = Input(iotype, required, min, max, default, incr)
+        setattr(cls, name, _input)
+    
+    @classmethod
+    def add_output(cls, name, iotype):
+        _output = Output(iotype)
+        setattr(cls, name, _output)
+    
+    @classmethod
+    def add_parser(cls, parse_func):
+        setattr(cls, 'parser', parse_func)
+    
+    @classmethod
+    def get_parser(cls):
+        return getattr(cls, 'parser')
+    
     @classmethod
     def get_inputs(cls):
         return cls.get_params(Input)
@@ -100,10 +124,6 @@ class BaseService(object):
     @classmethod
     def get_output_values(cls):
         return cls.get_params(Output, lambda x:x.value)
-
-    @staticmethod
-    def f_iter(x):
-        return x
 
     def copy(self):
         return copy.deepcopy(self)
