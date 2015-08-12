@@ -30,5 +30,5 @@ class ServiceManager(object):
     def activate_service(self, service_name):
         try:
             return BaseService.services[service_name]()
-        except:
+        except KeyError:
             raise excpt.ServiceNotFoundException
