@@ -17,7 +17,7 @@ class ServiceManager(object):
     def _load_services(self, dirname):
         for filename in glob(os.path.join(dirname, '*.py')):
             name, ext = os.path.splitext(filename)
-            imp.load_source(name, os.path.join(dirname, filename))
+            imp.load_source('pywebdata', os.path.join(dirname, filename))
 
     @classmethod
     def _set_initialized(cls):
