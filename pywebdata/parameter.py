@@ -1,6 +1,8 @@
 import math
 from itertools import ifilter
 
+iotypes = {'float': float, 'int': int}
+
 def frange(a, b=None, incr=1.):
   if b is None:
     b, a = a, 0.
@@ -11,14 +13,14 @@ def frange(a, b=None, incr=1.):
 
 class Output(object):
     def __init__(self, iotype, f_parse=None):
-        self.iotype = iotype
+        self.iotype = iotypes[iotype]
         self.value = None
         self.f_parse = f_parse
 
 class Input(object):
 
     def __init__(self, iotype, required=True, min=None, max=None, default=None, incr=None):
-        self.iotype = iotype
+        self.iotype = iotypes[iotype]
         self.is_required = required
         self._min = min
         self._max = max
