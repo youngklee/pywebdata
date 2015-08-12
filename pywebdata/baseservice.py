@@ -49,21 +49,17 @@ class BaseService(object):
             results.extend(res)
         return results
 
-    def conditional_query(self, qry_string=''):
-        outputs = self.get_outputs()
-        if qry_string:
-            conditions = parse_query(qry_string)
+    def conditional_query(self, qry_string=None):
+        inputs = self.get_inputs()
+        conditions = parse_query(qry_string)
 
         def attach_input_name(qry):
             return dict(zip(inputs.keys(), qry))
 
-        input_ranges = []
-        inputs = self.get_inputs()
-        for input_name, input_obj in inputs.items():
-            input_range = input_obj.get_range(conditions[input_name])
-            input_ranges.append(input_range)
-
+        get_input_range = lambda (x, y): y.get_range(conditions[x])
+        input_ranges = map(get_input_range, inputs.items())
         queries = imap(attach_input_name, product(*input_ranges))
+
         return self.query_many(queries)
     
     def parse_results(self, results):
