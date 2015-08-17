@@ -10,13 +10,14 @@ class ServiceManager(object):
     service_dirs = [os.path.abspath(os.path.join(os.path.dirname(__file__), 'services'))]
     is_initialized = False
 
-    def __init__(self):
-        map(self._load_services, self.service_dirs)
-        self._set_initialized()
+    @classmethod
+    def load_all(cls):
+        map(cls.load_from_directory, cls.service_dirs)
+        cls._set_initialized()
 
-    def _load_services(self, dirname):
+    @staticmethod
+    def load_from_directory(dirname):
         for filename in glob(os.path.join(dirname, '*.py')):
-            name, ext = os.path.splitext(filename)
             imp.load_source('pywebdata', os.path.join(dirname, filename))
 
     @classmethod
@@ -24,11 +25,21 @@ class ServiceManager(object):
         cls.is_initialized = True
 
     @classmethod
-    def add_path(cls, path):
-        cls.service_dirs.append(path)
+    def register_path(cls, path):
+        if not cls.is_initialized:
+            cls.service_dirs.append(path)
+        else:
+            raise excpt.ServiceManagerInitializedException
 
-    def activate_service(self, service_name):
-        try:
-            return BaseService.services[service_name]()
-        except KeyError:
-            raise excpt.ServiceNotFoundException
+    @staticmethod
+    def fetch_service(service_name):
+
+        if service_name not in BaseService.services.keys():
+            raise expt.ServiceNotFoundException
+
+        return BaseService.services[service_name]()
+
+    @staticmethod
+    def list_services():
+        return BaseService.services.keys()
+        

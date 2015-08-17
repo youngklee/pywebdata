@@ -1,6 +1,6 @@
 from servicemanager import ServiceManager
 
-service_manager = ServiceManager()
-
 def Service(name):
-    return service_manager.activate_service(name)
+    if not ServiceManager.is_initialized:
+        ServiceManager.load_all()
+    return ServiceManager.fetch_service(name)
