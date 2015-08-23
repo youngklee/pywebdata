@@ -8,7 +8,9 @@ Usage
 1) Add a file called *my_new_service.py* to the *pywebdata/services/* directory
 
 .. code-block:: python
-
+    
+    from pywebdata.baseservice import BaseService
+        
     class GoogleElevationAPI(BaseService):
     
         name = 'google-elevation-api'
