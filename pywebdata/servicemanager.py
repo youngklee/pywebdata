@@ -40,6 +40,6 @@ class ServiceManager(object):
         return BaseService.services[service_name]()
 
     @staticmethod
-    def list_services():
+    def get_services():
         return BaseService.services.keys()
         

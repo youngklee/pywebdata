@@ -51,7 +51,7 @@ class BaseService(object):
         return results
 
     def conditional_query(self, qry_string=None):
-        inputs = self.get_inputs()
+        inputs = self.get_input_objects()
         conditions = parse_query(qry_string)
 
         def attach_input_name(qry):
@@ -69,7 +69,7 @@ class BaseService(object):
 
     def parse_row(self, row):
         result_row = {}
-        for name, output in self.get_outputs().items():
+        for name, output in self.get_output_objects().items():
             if getattr(self, name).f_parse:
                 result_row[name] = getattr(self, name).f_parse(row)
             else:
@@ -102,13 +102,21 @@ class BaseService(object):
         return getattr(cls, 'parser')
     
     @classmethod
-    def get_inputs(cls):
+    def get_input_objects(cls):
         return cls.get_params(Input)
 
     @classmethod
-    def get_outputs(cls):
+    def get_input_names(cls):
+        return cls.get_input_objects().keys()
+
+    @classmethod
+    def get_output_objects(cls):
         return cls.get_params(Output)
 
+    @classmethod
+    def get_output_names(cls):
+        return cls.get_output_objects().keys()
+        
     @classmethod
     def get_params(cls, param_type, f=lambda x:x):
         param_dict = {}
