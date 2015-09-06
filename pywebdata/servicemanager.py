@@ -35,7 +35,7 @@ class ServiceManager(object):
     def fetch_service(service_name):
 
         if service_name not in BaseService.services.keys():
-            raise expt.ServiceNotFoundException
+            raise excpt.ServiceNotFoundException
 
         return BaseService.services[service_name]()
 
